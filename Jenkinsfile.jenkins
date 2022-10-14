@@ -1,0 +1,50 @@
+pipeline {
+ agent any 
+ tools {
+  git 'Default'
+  terraform 'terraform-latest'
+}
+ 
+ stages {
+    stage("Git checkout Module1")
+     {
+        steps  {
+               git branch: 'main', url: 'https://github.com/parthac1/Terraform-DNS-to-DB-Multi-Module.git'
+
+        }
+      }
+     stage ("Terraform init Module1") 
+     {
+       
+        
+        steps {
+              sh '''cd Module1/
+               '''
+            sh 'terraform  -chdir="./Module1" init'
+        }
+     }
+       stage ("Terraform Plan Module1") 
+     { 
+       
+        steps {
+            
+             
+            sh 'terraform -chdir="./Module1" plan'
+        }
+     }
+       
+         stage ("Terraform Apply Module1") 
+     {  
+        
+
+        steps {
+            
+            sh 'terraform -chdir="./Module1" apply -auto-approve'
+        }
+     }
+  
+  
+    }
+
+
+}
